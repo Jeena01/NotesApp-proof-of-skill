@@ -2,7 +2,7 @@
 
 **Proof of Skill:** Frontend Frameworks, State Management & Authentication
 
-A modern, full-stack **Notes Application** built with **Flask (Python)** on the backend and **Vue 3 (Vite)** on the frontend.
+A full-stack **Notes Application** built with **Flask (Python)** on the backend and **Vue 3 (Vite)** on the frontend.
 This project demonstrates skills in **frontend frameworks**, **authentication (JWT)**, **drag-and-drop reordering**, and **responsive UI design** using **TailwindCSS**.
 
 ---
