@@ -11,6 +11,7 @@ CORS(app)
 
 users = {}
 notes = {}
+preferences ={}
 
 def token_required(f):
     @wraps(f)
@@ -70,6 +71,23 @@ def add_note(current_user):
 def delete_note(current_user, note_id):
     notes[current_user] = [n for n in notes[current_user] if n['id'] != note_id]
     return '', 204
+
+# TO DO FIX UP THESE TWO METHODS#####################################
+@app.route('/mode', methods=['GET'])
+@token_required
+def get_mode(current_user,light):
+    return preferences[current_user],200
+
+@app.route('/mode/<int:light>',methods=['POST'])
+@token_required
+def set_mode(current_user,light):
+    if light == 1 or light ==0:
+        preferences[current_user]=light
+        return 'set to '+ 'light' if light==1 else 'dark',201
+    else:
+        return 'Bad Request',400
+############################
+##############################3
 
 if __name__ == '__main__':
     app.run(debug=True)
