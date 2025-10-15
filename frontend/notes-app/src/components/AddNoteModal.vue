@@ -2,14 +2,15 @@
   <div>
     <!-- Floating draggable add button -->
     <div
-      ref="buttonRef"
-      class="fixed bottom-6 right-6 bg-emerald-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-4xl cursor-pointer shadow-lg hover:bg-emerald-600 active:scale-95 transition-all select-none"
-      @mousedown="startDrag"
-      @touchstart.prevent="startDrag"
-      @click="toggleModal"
-    >
-      +
-    </div>
+  ref="buttonRef"
+  class="fixed bottom-6 right-6 bg-emerald-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-4xl leading-none cursor-pointer shadow-lg hover:bg-emerald-600 active:scale-95 transition-all select-none"
+  @mousedown="startDrag"
+  @touchstart.prevent="startDrag"
+  @click="toggleModal"
+>+</div>
+
+
+
 
     <!-- Modal -->
     <div
@@ -54,7 +55,9 @@ const emit = defineEmits(['add'])
 const showModal = ref(false)
 const noteText = ref('')
 
-const toggleModal = () => (showModal.value = !showModal.value)
+const toggleModal = () => {
+  if (!isDragging) showModal.value = !showModal.value
+}
 const submitNote = () => {
   if (!noteText.value.trim()) return
   emit('add', noteText.value)
@@ -70,20 +73,19 @@ let offsetY = 0
 
 const startDrag = (e) => {
   e.stopPropagation()
-  isDragging = true
+  isDragging = false // reset
   const button = buttonRef.value
   const rect = button.getBoundingClientRect()
   const event = e.touches ? e.touches[0] : e
   offsetX = event.clientX - rect.left
   offsetY = event.clientY - rect.top
+
   document.addEventListener('mousemove', onDrag)
   document.addEventListener('mouseup', stopDrag)
   document.addEventListener('touchmove', onDrag)
   document.addEventListener('touchend', stopDrag)
 }
-
 const onDrag = (e) => {
-  if (!isDragging) return
   const event = e.touches ? e.touches[0] : e
   const button = buttonRef.value
   const x = event.clientX - offsetX
@@ -92,10 +94,13 @@ const onDrag = (e) => {
   button.style.top = `${y}px`
   button.style.bottom = 'auto'
   button.style.right = 'auto'
+
+  // Mark that we actually dragged
+  isDragging = true
 }
 
 const stopDrag = () => {
-  isDragging = false
+  setTimeout(() => (isDragging = false), 0) // reset for next click
   document.removeEventListener('mousemove', onDrag)
   document.removeEventListener('mouseup', stopDrag)
   document.removeEventListener('touchmove', onDrag)

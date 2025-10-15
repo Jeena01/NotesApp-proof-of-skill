@@ -1,15 +1,15 @@
 <template>
   <div>
-    <Header />
-    <div class="container">
-      <NotesGrid :notes="notes" :deleteNote="deleteNote" />
-      <AddNoteModal @add="addNote" />
+    <div>
+      <NotesGrid v-model="notes" :deleteNote="deleteNote" />
+      <AddNoteModal v-on:add="addNote"/>
     </div>
+
   </div>
 </template>
 
 <script setup>
-import Header from '../components/Header.vue'
+
 import NotesGrid from '../components/NotesGrid.vue'
 import AddNoteModal from '../components/AddNoteModal.vue'
 import { ref, onMounted } from 'vue'
@@ -17,6 +17,7 @@ import axios from 'axios'
 
 const notes = ref([])
 const api = axios.create({ baseURL: 'http://127.0.0.1:5000' })
+
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token')
   if (token) config.headers.Authorization = `Bearer ${token}`
