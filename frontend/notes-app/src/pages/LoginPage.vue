@@ -7,9 +7,7 @@
       <button>Login</button>
     </form>
     <p>Don’t have an account? <a href="/register">Register</a></p>
-    <div class="p-6 bg-emerald-500 text-white rounded-xl">
-  Tailwind v4 is working ✨
-</div>
+    
 
   </div>
 </template>
